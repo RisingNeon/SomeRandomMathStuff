@@ -14,59 +14,24 @@
 ## along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*- 
-## @deftypefn {} {@var{retval} =} addNum (@var{input1}, @var{input2})
+## @deftypefn {} {@var{retval} =} NewtonPolynom (@var{input1}, @var{input2})
 ##
 ## @seealso{}
 ## @end deftypefn
 
 ## Author: User <User@DESKTOP-VMRN8OS>
-## Created: 2018-03-20
+## Created: 2018-04-16
 
-function [res] = addNum (num1, num2, prec)
-  vec1 = zeros(1,prec);
-  vec1 = zeros(1,prec);
-  
-  indK1 = num1.KommaPos;
-  indK2 = num2.KommaPos;
-  
-  if indK1 >= indK2
+function [y] = NewtonPolynom (x,x_vec,gamma_vec,n)
     
-    a = num1.NumVec;
-    b = num2.NumVec;
+    sum = gamma_vec(1,1);
+    product = 1;
     
-  else
-  
-    b = num1.NumVec;
-    a = num2.NumVec;
-  
-  endif
-  
-  #richtiges schreiben in vec1 und vec2 (In abhängigkeit von KommaPos)
-  
-  k1 = 1;
-  k2 = 1;
-  
-  for k = 1:prec
+    for k = 2:n+1
+      product = product .* (x-x_vec(k-1));
+      sum = sum + (gamma_vec(1,k).*product);
+    endfor
     
-    if abs(indK1-indK2) > 0
-      
-      
-    endif
+    y = sum;
     
-    if k<=size(a)(2)
-      vec1(1,k) = a(1,k1);
-      k1++;
-    endif
-    
-    if k<=size(b)(2)
-      vec2(1,k) = b(1,k2);
-      k2++;+
-    endif
-    
-  endfor
-  
-  #Addition der Vektoren
-  
-  
-  res = struct();
-endfunction
+  endfunction

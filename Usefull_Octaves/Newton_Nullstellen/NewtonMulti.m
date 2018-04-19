@@ -14,25 +14,46 @@
 ## along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*- 
-## @deftypefn {} {@var{retval} =} Newton (@var{input1}, @var{input2})
+## @deftypefn {} {@var{retval} =} NewtonMulti (@var{input1}, @var{input2})
 ##
 ## @seealso{}
 ## @end deftypefn
 
 ## Author: User <User@DESKTOP-VMRN8OS>
-## Created: 2018-02-27
+## Created: 2018-03-02
 
-function [x] = Newton (func, xk, steps, h)
-  
-  x = zeros(steps,2);
-  x(1,1) = 1;
-  x(1,2) = xk;
-  
+function [x, konv] = NewtonMulti (func, xk, steps, h)
+  x = zeros(size(xk)(1),steps);
+  x(:,1) = xk(:,1);
+  konv = zeros(steps,1);
+  clf;
+  shg;
   for i = 2:steps
-    abl = (feval(func, x(i-1,2)+h)-feval(func, x(i-1,2)-h))/(2*h);
-    xk1 = x(i-1,2)-(feval(func, x(i-1,2))/abl);
-    x(i,1) = i;
-    x(i,2) = xk1;
+    J = Jakobi(func,x(:,i-1),h);
+    f = -feval(func, x(:,i-1));
+    deltaX = J\f;
+    x(:,i) = x(:,i-1) + deltaX;
+    konv(i-1,1) = norm(x(:,i)-x(:,i-1));
+    
+    hold on;
+    plot(0:i-2,konv(1:i-1,1),"color","g");
+    line([0;i-2],[eps;eps],"linewidth",2,"color","r");
+    hold off;
+    refresh();
+    wait(0.5);
+    
+    
+    
   endfor
+
+endfunction
+
+function wait (waitT)
+  
+  startT = time();
+  endT = startT + waitT;
+  
+  while(time() <= endT)
+  endwhile
 
 endfunction

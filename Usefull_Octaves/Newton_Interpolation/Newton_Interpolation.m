@@ -14,59 +14,34 @@
 ## along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*- 
-## @deftypefn {} {@var{retval} =} addNum (@var{input1}, @var{input2})
+## @deftypefn {} {@var{retval} =} Newton_Interpolation (@var{input1}, @var{input2})
 ##
 ## @seealso{}
 ## @end deftypefn
 
 ## Author: User <User@DESKTOP-VMRN8OS>
-## Created: 2018-03-20
+## Created: 2018-04-14
 
-function [res] = addNum (num1, num2, prec)
-  vec1 = zeros(1,prec);
-  vec1 = zeros(1,prec);
+function [res] = Newton_Interpolation (f, x, x_vec, n)
   
-  indK1 = num1.KommaPos;
-  indK2 = num2.KommaPos;
+  dif_vec = zeros(length(x_vec),n+1);
   
-  if indK1 >= indK2
-    
-    a = num1.NumVec;
-    b = num2.NumVec;
-    
-  else
-  
-    b = num1.NumVec;
-    a = num2.NumVec;
-  
-  endif
-  
-  #richtiges schreiben in vec1 und vec2 (In abhängigkeit von KommaPos)
-  
-  k1 = 1;
-  k2 = 1;
-  
-  for k = 1:prec
-    
-    if abs(indK1-indK2) > 0
-      
-      
-    endif
-    
-    if k<=size(a)(2)
-      vec1(1,k) = a(1,k1);
-      k1++;
-    endif
-    
-    if k<=size(b)(2)
-      vec2(1,k) = b(1,k2);
-      k2++;+
-    endif
-    
+  for i = 1:length(x_vec)
+    dif_vec(i,1) = feval(f,x_vec(i));
   endfor
   
-  #Addition der Vektoren
+  for k = 2:(n+1)
+    for j = 1:(n-k)+2
+      
+      dif_vec(j,k) = (dif_vec(j+1,k-1)-dif_vec(j,k-1))/(x_vec(j+k-1)-x_vec(j));
+      
+    endfor
+  endfor
+  
+  gamma_vec = dif_vec(1,:);
+  
+  res = NewtonPolynom(x, x_vec, gamma_vec, n);
   
   
-  res = struct();
+  
 endfunction
