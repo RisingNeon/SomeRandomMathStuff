@@ -22,7 +22,7 @@
 ## Author: User <User@DESKTOP-VMRN8OS>
 ## Created: 2018-04-14
 
-function [res] = Newton_Interpolation (f, x, x_vec, n)
+function [res,gamma_vec] = Newton_Interpolation (f, x, x_vec, n)
   
   dif_vec = zeros(length(x_vec),n+1);
   
